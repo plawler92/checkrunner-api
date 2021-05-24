@@ -1,0 +1,1 @@
+1. Read all test files from tests/ directory. name:path pairs
