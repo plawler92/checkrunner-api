@@ -12,7 +12,9 @@ class CheckMemory:
                 return c
     
     def get_checks_by_type(self, check_type):
-        return [x for x in self._checks if x.check_type == check_type]
+        checks = [x for x in self._checks if x.check_type == check_type]
+        return checks
 
     def get_checks_by_suite(self, check_suite):
-        return [x for x in self._checks if check_suite in x.suites]
+        checks = [x for x in self._checks if check_suite in x.suites]
+        return checks

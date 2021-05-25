@@ -15,7 +15,7 @@
             "type": "string",
             "enum": ["sqlserver"]
         },
-        "checkSuite": {
+        "checkSuites": {
             "description": "An array of suites for the check to run as part of",
             "type": "array",
             "uniqueItems": true,

@@ -9,12 +9,9 @@ services:
       - MSSQL_PID=Standard
       - SA_PASSWORD=Echo1234
       - MSSQL_AGENT_ENABLED=true
-#     volumes:
-#       - ./dqm-data/sqlserver:/var/opt/mssql/backup
-#       - sqlserver_data:/var/opt/mssql
+    volumes:
+      - sqlserver_data:/var/opt/mssql
 
-# volumes:
-#   elastic_data:
-#     driver: local
-#   sqlserver_data:
-#     driver: local
+volumes:
+  sqlserver_data:
+    driver: local

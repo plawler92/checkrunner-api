@@ -12,5 +12,6 @@ class CheckFactory:
                 check_type=check_params["checkType"],
                 check = check_params["sql"],
                 check_pass_value = check_params["passValue"],
-                executor = SQLServerExecutor(self.databases[check_params["database"]])
+                executor = SQLServerExecutor(self.databases[check_params["database"]]),
+                suites=check_params.get("checkSuites")
             )

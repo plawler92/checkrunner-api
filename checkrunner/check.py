@@ -3,13 +3,13 @@ from datetime import datetime
 from checkrunner.check_result import CheckResult
 
 class Check:
-    def __init__(self, check_name, check_type, check, check_pass_value, executor, suites=None):
+    def __init__(self, check_name, check_type, check, check_pass_value, executor, suites=[]):
         self.check_name = check_name
         self.check_type = check_type
         self.check = check
         self.check_pass_value = check_pass_value
         self.executor = executor
-        self.suites = suites
+        self.suites = suites if suites else []
 
     def run_check(self):
         executor_output = self.executor.execute(self.check)
