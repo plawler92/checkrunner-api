@@ -4,3 +4,7 @@ checks/
 .pytest_cache/
 env/
 venv/
+.coverage
+coverage.xml
+htmlcov/
+junit/
