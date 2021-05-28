@@ -14,17 +14,6 @@ class CheckManager:
             self.check_factory.create_check(y)
             for y in self.yaml_manager.get_yamls()
         ])
-        # checks = []
-        # files = futil.get_files(self.checks_path)
-        # for file in files:
-        #     ya = futil.read_yaml(file)
-        #     c = self.check_factory.create_check(ya)
-        #     checks.append(c)
-        # self.check_memory.set_checks(checks)
-        # self.check_memory.set_checks([
-        #     self.check_factory.create_check(futil.read_yaml(ya))
-        #     for ya in futil.get_files(self.checks_path)
-        # ])
 
     def run_check_by_name(self, check_name):
         return CheckSuite(check_name, [self.check_memory.get_check_by_name(check_name).run_check()])        

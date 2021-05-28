@@ -1,5 +1,5 @@
 from checkrunner.file_manager import FileManager
-import tests.test_config as cfg
+import tests.config as cfg
 
 # def test_get_files():
 #     # should setup a test that creates files/folders

@@ -1,6 +1,6 @@
 from checkrunner.check import Check
 from checkrunner.executors import SQLServerExecutor
-from tests import test_config as cfg
+from tests import config as cfg
 
 class ExampleExecutor:
     def __init__(self, pass_value):

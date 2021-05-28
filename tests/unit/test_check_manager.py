@@ -3,8 +3,7 @@ from checkrunner.check_manager import CheckManager
 from checkrunner.check_factory import CheckFactory
 from checkrunner.check_memory import CheckMemory
 from checkrunner.check import Check
-from checkrunner.file_manager import FileManager
-import tests.test_config as cfg
+import tests.config as cfg
 
 class ExampleExecutor:
     def __init__(self, pass_value):
@@ -13,10 +12,27 @@ class ExampleExecutor:
     def execute(self, check):
         return self.pass_value
 
+class TestYamlManager:
+    def get_yamls(self):
+        return [
+            create_yaml("three", "sqlserver", None, "TestDB", "pass", "select 'pass'"),
+            create_yaml("four", "sqlserver", None, "TestDB", "pass", "select 'pass'")
+        ]
+    
+def create_yaml(check_name, check_type, check_suites, database, passValue, sql):
+    return {
+        "checkName": check_name,
+        "checkType": check_type,
+        "checkSuites": check_suites,
+        "database": database,
+        "passValue": passValue,
+        "sql": sql
+    }
+
 def create_check_manager(check_factory=None, check_memory=None, yaml_manager=None):
     cf = check_factory or CheckFactory(cfg.databases)
     cmem = check_memory or CheckMemory()
-    fm = yaml_manager or FileManager(cfg.checks_path)
+    fm = yaml_manager or TestYamlManager()
     return CheckManager(cf, cmem, fm)
 
 def test_refresh_checks():
@@ -24,7 +40,7 @@ def test_refresh_checks():
 
     cm.refresh_checks()
     checks = cm.check_memory._checks
-    check_result = checks[1]
+    check_result = checks[0]
 
     assert len(checks) == 2
     assert check_result.check_name == "three"
@@ -33,10 +49,8 @@ def test_refresh_checks():
     assert check_result.check_pass_value.lower() == "pass"
 
 def test_run_check_by_name():
-    # cf = CheckFactory(cfg.databases)
     cmem = CheckMemory()
     cmem._checks = create_checks(3)
-    # cm = CheckManager(cfg.checks_path, cf, cmem)
 
     cm = create_check_manager(check_memory=cmem)
     result = cm.run_check_by_name("0")
@@ -48,10 +62,8 @@ def test_run_check_by_name():
     assert result.check_results[0].check_result == True
 
 def test_run_checks_by_type():
-    # cf = CheckFactory(cfg.databases)
     cmem = CheckMemory()
     cmem._checks = create_checks(3)
-    # cm = CheckManager(cfg.checks_path, cf, cmem)
 
     cm = create_check_manager(check_memory=cmem)
     result = cm.run_checks_by_type("sqlserver")
@@ -65,10 +77,8 @@ def test_run_checks_by_type():
         assert c.check_result == True
 
 def test_run_checks_by_suite():
-    # cf = CheckFactory(cfg.databases)
     cmem = CheckMemory()
     cmem._checks = create_checks(3)
-    # cm = CheckManager(cfg.checks_path, cf, cmem)
 
     cm = create_check_manager(check_memory=cmem)
     results = cm.run_checks_by_suite("tests")
