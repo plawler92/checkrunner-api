@@ -38,3 +38,21 @@ def check():
 def refresh_checks():
     current_app.check_manager.refresh_checks()
     return jsonify(success=True)
+
+@api_blueprint.route("/check_names", methods=["GET"])
+def check_names():
+    check_names = current_app.check_manager.get_check_names()
+
+    if check_names:
+        return jsonify(check_names=check_names)
+    else: 
+        return make_response(jsonify(check_names=[]), 404)
+
+@api_blueprint.route("/check_suites", methods=["GET"])
+def check_suites():
+    check_suites = list(current_app.check_manager.get_check_suites())
+
+    if check_suites:
+        return jsonify(check_suites=check_suites)
+    else:
+        return make_response(jsonify(check_suites=[]), 404)

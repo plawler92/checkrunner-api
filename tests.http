@@ -6,6 +6,14 @@ GET http://localhost:5000/ready
 
 ###
 
+GET http://localhost:5000/api/check_names
+
+###
+
+GET http://localhost:5000/api/check_suites
+
+###
+
 GET http://localhost:5000/api/check?name=three
 
 ###

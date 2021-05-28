@@ -9,6 +9,3 @@ class SQLServerExecutor:
             cursor = conn.cursor()
             cursor.execute(test)
             return cursor.fetchone()[0]
-            
-
-

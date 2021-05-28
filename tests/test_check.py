@@ -16,3 +16,15 @@ def test_check_run():
     assert result.check_name == "test-check"
     assert result.check_type == "sqlserver"
     assert result.check_result == True
+
+# def test_check_eq():
+#     c1 = Check("test-check", "sqlserver", "1", "1", None)
+#     c2 = Check("test-check", "s", "2", "2", None)
+
+#     assert c1 == c2
+
+# def test_check_hash():
+#     c1 = Check("test-check", "1", "1", "1", "1")
+#     c2 = Check("test-check", "a", "a", "a", "a")
+
+#     assert hash(c1) == hash(c2)
