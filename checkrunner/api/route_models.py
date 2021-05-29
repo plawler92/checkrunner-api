@@ -1,5 +1,4 @@
 
-
 class CheckRequest:
     def __init__(self, check_name=None, check_suite=None, check_type=None):
         self.check_name = check_name

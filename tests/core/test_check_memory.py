@@ -1,5 +1,5 @@
-from checkrunner.check_memory import CheckMemory
-from checkrunner.check import Check
+from checkrunner.core.check_memory import CheckMemory
+from checkrunner.core.check import Check
 
 def get_current_check_memory_structure():
     return CheckMemory()

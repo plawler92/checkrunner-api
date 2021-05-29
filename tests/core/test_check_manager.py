@@ -1,9 +1,11 @@
-from checkrunner.check import Check
-from checkrunner.check_manager import CheckManager
-from checkrunner.check_factory import CheckFactory
-from checkrunner.check_memory import CheckMemory
-from checkrunner.check import Check
-import tests.config as cfg
+from checkrunner.core.check import Check
+from checkrunner.core.check_manager import CheckManager
+from checkrunner.core.factories import CheckFactory, SQLServerCheckFactory
+from checkrunner.core.check_memory import CheckMemory
+from checkrunner.core.check import Check    
+from tests.config import Config
+
+cfg = Config()
 
 class ExampleExecutor:
     def __init__(self, pass_value):
@@ -30,7 +32,8 @@ def create_yaml(check_name, check_type, check_suites, database, passValue, sql):
     }
 
 def create_check_manager(check_factory=None, check_memory=None, yaml_manager=None):
-    cf = check_factory or CheckFactory(cfg.databases)
+    sf = SQLServerCheckFactory(cfg.databases)
+    cf = check_factory or CheckFactory([sf])
     cmem = check_memory or CheckMemory()
     fm = yaml_manager or TestYamlManager()
     return CheckManager(cf, cmem, fm)
@@ -115,6 +118,17 @@ def test_get_check_suites():
     assert len(results) == 2
     assert "tests" in results
     assert "hello" in results
+
+def test_check_name_doesnt_exist():
+    cmem = CheckMemory()
+    cmem._checks = create_checks(3)
+
+    cm = create_check_manager(check_memory=cmem)
+    results = cm.run_check_by_name("asdlfkjasdlfkja")
+
+    assert results.successes == 0
+    assert results.failures == 0
+    assert results.check_results == []
 
 
 def create_checks(num_checks):

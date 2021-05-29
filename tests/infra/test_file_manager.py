@@ -1,18 +1,7 @@
-from checkrunner.file_manager import FileManager
-import tests.config as cfg
+from checkrunner.infra.yaml_managers.file_manager import FileManager
+from tests.config import Config
 
-# def test_get_files():
-#     # should setup a test that creates files/folders
-#     files = file_util.get_files(cfg.checks_path)
-#     assert len(files) == 2
-
-# def test_read_yaml():
-#     y = file_util.read_yaml(cfg.checks_path + "three.yaml")
-#     assert y["checkName"] == "three"
-#     assert y["checkType"] == "sqlserver"
-#     assert y["database"] == "TestDB"
-#     assert y["passValue"] == "Pass"
-#     assert y["sql"].strip() == "SELECT 'Pass'" 
+cfg = Config()
 
 def create_file_manager():
     return FileManager(cfg.checks_path)

@@ -2,7 +2,7 @@ import logging
 from flask import request, Blueprint, current_app, make_response
 from flask.json import jsonify
 
-from checkrunner.route_models import CheckRequest
+from checkrunner.api.route_models import CheckRequest
 
 api_blueprint = Blueprint("api_blueprint", __name__)
 

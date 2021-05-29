@@ -1,5 +1,7 @@
-from checkrunner.executors import SQLServerExecutor
-import tests.config as cfg
+from checkrunner.infra.executors import SQLServerExecutor
+from tests.config import Config
+
+cfg = Config()
 
 def test_execute():
     test_sql = "SELECT 'PASS'"

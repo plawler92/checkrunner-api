@@ -1,4 +1,4 @@
-from checkrunner.check_result import CheckResult
+from checkrunner.core.check_result import CheckResult
 from datetime import datetime
 
 def test_check_result_serialization():
@@ -8,7 +8,8 @@ def test_check_result_serialization():
         "check_result": True,
         "check": "SELECT 'PASS'",
         "check_pass_value": "PASS",
-        "execution_time": datetime(2021, 1, 1, 12, 30, 0) # 1/1/2021 @ 12:30.0
+        "execution_time": datetime(2021, 1, 1, 12, 30, 0), # 1/1/2021 @ 12:30.0
+        "error": "test error"
     }
     cr = CheckResult(**vals)
     s = cr.serialize()
@@ -18,3 +19,4 @@ def test_check_result_serialization():
     assert s["check"] == vals["check"]
     assert s["check_pass_value"] == vals["check_pass_value"]
     assert s["execution_time"] == "2021-01-01 12:30:00"
+    assert s["error"] == "test error"

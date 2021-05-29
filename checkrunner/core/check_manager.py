@@ -1,7 +1,4 @@
-from checkrunner.check import Check
-from checkrunner.check_memory import CheckMemory
-from checkrunner import file_util as futil
-from checkrunner.check_suite import CheckSuite
+from checkrunner.core.check_suite import CheckSuite
 
 class CheckManager:
     def __init__(self, check_factory, check_memory, yaml_manager):
@@ -16,7 +13,11 @@ class CheckManager:
         ])
 
     def run_check_by_name(self, check_name):
-        return CheckSuite(check_name, [self.check_memory.get_check_by_name(check_name).run_check()])        
+        results = []
+        check = self.check_memory.get_check_by_name(check_name)
+        if check:
+            results.append(check.run_check())
+        return CheckSuite(check_name, results)             
 
     def run_checks_by_type(self, check_type):
         return CheckSuite(check_type, [

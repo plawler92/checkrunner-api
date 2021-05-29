@@ -1,4 +1,4 @@
-
+# This should maybe exist in infra
 class CheckMemory:
     def __init__(self):
         self._checks = []

@@ -1,5 +1,5 @@
-from checkrunner.check_suite import CheckSuite
-from checkrunner.check_result import CheckResult
+from checkrunner.core.check_suite import CheckSuite
+from checkrunner.core.check_result import CheckResult
 
 def test_check_suite():
     check_results = create_check_results(2)
