@@ -7,10 +7,12 @@ class CheckManager:
         self.yaml_manager = yaml_manager
 
     def refresh_checks(self):
-        self.check_memory.set_checks([
-            self.check_factory.create_check(y)
-            for y in self.yaml_manager.get_yamls()
-        ])
+        checks = []
+        for y in self.yaml_manager.get_yamls():
+            c = self.check_factory.create_check(y)
+            if c:
+                checks.append(c)
+        self.check_memory.set_checks(checks)
 
     def run_check_by_name(self, check_name):
         results = []

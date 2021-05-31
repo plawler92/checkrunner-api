@@ -4,12 +4,14 @@ import logging
 class Config:
     checks_path = os.getenv("CHECKS_PATH", default="checks/")
 
-    db_user = os.getenv("DB_USER", default="sa")
-    db_password = os.getenv("DB_PASSWORD", default="Echo1234")
-    server = os.getenv("SERVER", default="localhost")
-    testdb = "DRIVER={ODBC Driver 17 for SQL Server};SERVER="+server+";DATABASE=TestDB;UID="+db_user+";PWD="+db_password
     databases = {
-        "TestDB": testdb
+        "ODSVault": os.getenv("DB_ODS_ODSVAULT", default="DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=ODSVault;UID=sa;PWD=Echo1234"),
+        "ODSMartTracking": os.getenv("DB_ODS_ODSMARTTRACKING", default="DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=ODSMartTracking;UID=sa;PWD=Echo1234"),
+        "ODSMartSourcing": os.getenv("DB_ODS_MARTSOURCING", default="DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=TestDB;UID=sa;PWD=Echo1234"),
+        "ODSMartTLQuoting": os.getenv("DB_ODS_ODSMARTTLQUOTING", default="DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=ODSMartTLQuoting;UID=sa;PWD=Echo1234"),
+        "ODSLog": os.getenv("DB_ODS_ODSLOG", default="DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=ODSLog;UID=sa;PWD=Echo1234"),
+        "EchoOptimizer": os.getenv("DB_DB01_ECHOOPTIMIZER", default="DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=EchoOptimizer;UID=sa;PWD=Echo1234"),
+        "ODSIntegration": os.getenv("DB_DB01_ODSINTEGRATION", default="DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=ODSIntegration;UID=sa;PWD=Echo1234"),
     }
 
     #10, 20, 30, 40

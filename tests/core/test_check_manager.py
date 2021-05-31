@@ -1,6 +1,6 @@
 from checkrunner.core.check import Check
 from checkrunner.core.check_manager import CheckManager
-from checkrunner.core.factories import CheckFactory, SQLServerCheckFactory
+from checkrunner.core.factories import CheckFactory, SQLServerCheckFactory, check_factory
 from checkrunner.core.check_memory import CheckMemory
 from checkrunner.core.check import Check    
 from tests.config import Config
@@ -50,6 +50,16 @@ def test_refresh_checks():
     assert check_result.check_type == "sqlserver"
     assert check_result.check.strip().lower() == "select 'pass'"
     assert check_result.check_pass_value.lower() == "pass"
+
+def test_refresh_checks_no_none():
+    sf = SQLServerCheckFactory({"No": "no"})
+    cf = CheckFactory([sf])
+    cm = create_check_manager(check_factory=cf)
+
+    cm.refresh_checks()
+    checks = cm.check_memory._checks
+    
+    assert checks == []
 
 def test_run_check_by_name():
     cmem = CheckMemory()
@@ -129,7 +139,6 @@ def test_check_name_doesnt_exist():
     assert results.successes == 0
     assert results.failures == 0
     assert results.check_results == []
-
 
 def create_checks(num_checks):
     return [
