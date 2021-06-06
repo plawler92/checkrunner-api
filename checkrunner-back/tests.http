@@ -1,0 +1,33 @@
+GET http://localhost:5000/alive
+
+###
+
+GET http://localhost:5000/ready
+
+###
+
+GET http://localhost:5000/api/check_names
+
+###
+
+GET http://localhost:5000/api/check_suites
+
+###
+
+GET http://localhost:5000/api/check?name=three
+
+###
+
+GET http://localhost:5000/api/check?name=loadid-exists
+
+###
+
+GET http://localhost:5000/api/check?suite=demo
+
+###
+
+GET http://localhost:5000/api/check?type=sqlserver
+
+###
+
+POST http://localhost:5000/api/refresh_checks
