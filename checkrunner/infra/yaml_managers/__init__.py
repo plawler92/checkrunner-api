@@ -1,1 +1,0 @@
-from checkrunner.infra.yaml_managers.file_manager import FileManager

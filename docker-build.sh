@@ -1,1 +1,0 @@
-docker build -t checkrunner:1.0.0 .
