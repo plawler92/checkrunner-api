@@ -1,18 +1,19 @@
 {
-    "python.pythonPath": "checkrunner-back\\env\\Scripts\\python.exe",
+    "python.pythonPath": "env\\Scripts\\python.exe",
     "json.schemas": [
         {
             "fileMatch": [
-                "/checkrunner-back/checks/*"
+                "/checks/*"
             ],
-            "url": "checkrunner-back/check.schema.json"
+            "url": "/check.schema.json"
         }
     ],
     "yaml.schemas": {
-        "./check.schema.json": ["/checkrunner-back/checks/*"]
+        "./check.schema.json": ["/checks/*"]
     },
     "python.testing.pytestArgs": [
-        "tests"
+        "tests",
+        "--ignore=tests/infra"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.nosetestsEnabled": false,
