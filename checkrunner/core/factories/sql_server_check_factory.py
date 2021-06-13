@@ -21,7 +21,6 @@ class SQLServerCheckFactory:
                 check_type=check_params["checkType"],
                 check = type_params["sql"],
                 check_pass_value = type_params["passValue"],
-                #executor = SQLServerExecutor(db),
                 executor = self.executor(db),
                 suites=check_params.get("checkSuites")
             )
