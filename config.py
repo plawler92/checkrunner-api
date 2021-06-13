@@ -2,7 +2,7 @@ import os
 import logging
 
 class Config:
-    checks_path = os.getenv("CHECKS_PATH", default="checks/")
+    checks_path = os.getenv("CHECKS_PATH", default="newchecks/")
     s3_bucket = os.getenv("S3_BUCKET", default="echo-bi-datateam-dev")
     s3_folder = os.getenv("S3_FOLDER", default="checkrunner")
     aws_access_key = os.getenv("AWS_ACCESS_KEY", default="AKIA5BPDHQI65MKEB746")

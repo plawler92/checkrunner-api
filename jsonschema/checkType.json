@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "definitions": {
+        "checkIsSqlServer": {
+            "required": [
+                "type"
+            ],
+            "properties": {
+                "type": {
+                    "const": "sqlserver"
+                }
+            }
+        },
+        "checkAsSQLServer": {
+            "required": [
+                "database", "sql", "passValue"
+            ],
+            "properties": {
+                "database": {
+                    "description": "database key",
+                    "type": "string"
+                },
+                "sql": {
+                    "description": "SQL to run",
+                    "type": "string"
+                },
+                "passValue": {
+                    "description": "Value that defines success",
+                    "type": "string"
+                }
+            }
+        },
+        "checkType": {
+            "allOf": [
+                {
+                    "if": {
+                        "$ref": "#/definitions/checkIsSQLServer"
+                    },
+                    "then": {
+                        "$ref": "#/definitions/checkAsSQLServer"
+                    }
+                }
+            ]
+        }
+    }  
+}

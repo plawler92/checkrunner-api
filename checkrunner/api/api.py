@@ -22,15 +22,17 @@ def check():
         pass
 
     check_result = None
-    if cr.check_name:
-        check_result = current_app.check_manager.run_check_by_name(cr.check_name)
-    elif cr.check_suite:
-        check_result = current_app.check_manager.run_checks_by_suite(cr.check_suite)
-    elif cr.check_type:
-        check_result = current_app.check_manager.run_checks_by_type(cr.check_type)
+    if cr.check_suite:
+        check_result = current_app.check_manager.run_check_suite(cr.check_suite)
+    # if cr.check_name:
+    #     check_result = current_app.check_manager.run_check_by_name(cr.check_name)
+    # elif cr.check_suite:
+    #     check_result = current_app.check_manager.run_checks_suite(cr.check_suite)
+    # elif cr.check_type:
+    #     check_result = current_app.check_manager.run_checks_by_type(cr.check_type)
 
     if check_result:
-        return jsonify(check_suite=check_result.serialize())
+        return jsonify(check_results=check_result.serialize())
     else:
         return make_response(jsonify(check_results=[]), 404)
 

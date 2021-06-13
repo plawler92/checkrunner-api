@@ -30,12 +30,9 @@ class CheckFactory:
         self.factory_classes[factory_key] = factory_class
 
     def create_check(self, check_params):
-        factory = self.factory_classes.get(check_params["checkType"])
+        factory = self.factory_classes.get(check_params["checkType"]["type"])
         if not factory:
-            raise FactoryClassTypeNotFoundError(f"Check type {check_params['checkType']} not found in CheckFactory")
+            raise FactoryClassTypeNotFoundError(f"Check type {check_params['checkType']['type']} not found in CheckFactory")
         else: 
             return factory.create_check(check_params)
-        # for i in self.factory_classes:
-        #     if i.factory_type == check_params["checkType"]:
-        #         return i.create_check(check_params)
 

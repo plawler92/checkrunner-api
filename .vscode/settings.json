@@ -5,11 +5,11 @@
             "fileMatch": [
                 "/checks/*"
             ],
-            "url": "/check.schema.json"
+            "url": "/jsonschema/check.schema.json"
         }
     ],
     "yaml.schemas": {
-        "./check.schema.json": ["/checks/*"]
+        "jsonschema/check.schema.json": ["/checks/*"]
     },
     "python.testing.pytestArgs": [
         "tests",

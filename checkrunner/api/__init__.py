@@ -28,15 +28,15 @@ def create_app(config) -> Flask:
     check_factory = CheckFactory()
     #check_factory.add_factory(sql_server_check_factory)
     check_factory.add_factory(sql_server_check_factory.factory_type, sql_server_check_factory)
-    # yaml_manager = FileManager(config.checks_path)
-    yaml_manager = S3YamlManager(
-        config.aws_access_key,
-        config.aws_secret_access_key,
-        config.aws_role_arn,
-        config.aws_external_id,
-        config.s3_bucket,
-        config.s3_folder
-    )
+    yaml_manager = FileManager(config.checks_path)
+    # yaml_manager = S3YamlManager(
+    #     config.aws_access_key,
+    #     config.aws_secret_access_key,
+    #     config.aws_role_arn,
+    #     config.aws_external_id,
+    #     config.s3_bucket,
+    #     config.s3_folder
+    # )
     # file_manager = S3YamlManager(config.aws_access_key, config.aws_secret_access_key, config.s3_bucket)
 
     check_manager = CheckManager(check_factory=check_factory, yaml_manager=yaml_manager)

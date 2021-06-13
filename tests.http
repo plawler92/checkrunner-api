@@ -22,7 +22,7 @@ GET http://localhost:5000/api/check?name=loadid-exists
 
 ###
 
-GET http://localhost:5000/api/check?suite=demo
+GET http://localhost:5000/api/check?suite=mult
 
 ###
 
