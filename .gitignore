@@ -10,3 +10,4 @@ htmlcov/
 junit/
 .env
 play.py
+*.secret.*.yaml
