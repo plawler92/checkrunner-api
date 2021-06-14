@@ -22,4 +22,4 @@ class Config:
         "ODSIntegration": os.getenv("DB_DB01_ODSINTEGRATION", default="DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=ODSIntegration;UID=sa;PWD=Echo1234"),
     }
 
-    LOG_LEVEL = os.getenv("LOG_LEVEL", default=logging.DEBUG)
+    LOG_LEVEL = int(os.getenv("LOG_LEVEL", default=30))
