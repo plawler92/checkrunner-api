@@ -22,7 +22,10 @@ def check():
         pass
 
     check_result = None
-    if cr.check_suite:
+
+    if cr.check_name:
+        check_result = current_app.check_manager.run_check_by_name(cr.check_name)
+    elif cr.check_suite:
         check_result = current_app.check_manager.run_check_suite(cr.check_suite)
     # if cr.check_name:
     #     check_result = current_app.check_manager.run_check_by_name(cr.check_name)
@@ -36,10 +39,10 @@ def check():
     else:
         return make_response(jsonify(check_results=[]), 404)
 
-@api_blueprint.route("/refresh_checks", methods=["POST"])
-def refresh_checks():
-    current_app.check_manager.refresh_checks()
-    return jsonify(success=True)
+# @api_blueprint.route("/refresh_checks", methods=["POST"])
+# def refresh_checks():
+#     current_app.check_manager.refresh_checks()
+#     return jsonify(success=True)
 
 @api_blueprint.route("/check_names", methods=["GET"])
 def check_names():

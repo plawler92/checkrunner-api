@@ -11,13 +11,17 @@ class CheckManager:
         self.yaml_manager = yaml_manager
         self.check_memory = check_memory
 
+    def get_all_checks(self):
+        yamls = self.yaml_manager.get_yamls()
+        return self.create_checks(yamls)
+
+
     def get_check_suites(self):
         suites = CheckSuiteCollection()
         if self.check_memory:
             pass
         else:
-            yamls = self.yaml_manager.get_yamls()
-            checks = self.create_checks(yamls)
+            checks = self.get_all_checks()
             suites.add_checks(checks)
         return suites
 
@@ -30,8 +34,7 @@ class CheckManager:
         return CheckResults(suite_name, results)
 
     def run_check_by_name(self, check_name):
-        yamls = self.yaml_manager.get_yamls()
-        checks = self.create_checks(yamls)
+        checks = self.get_all_checks()
         results = []
         for check in checks:
             if check.check_name == check_name:

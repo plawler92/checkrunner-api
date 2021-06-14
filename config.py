@@ -2,6 +2,7 @@ import os
 import logging
 
 class Config:
+    yaml_manager_type = os.getenv("YAML_MANAGER_TYPE", default="s3") # file, s3
     checks_path = os.getenv("CHECKS_PATH", default="newchecks/")
     s3_bucket = os.getenv("S3_BUCKET", default="echo-bi-datateam-dev")
     s3_folder = os.getenv("S3_FOLDER", default="checkrunner")
