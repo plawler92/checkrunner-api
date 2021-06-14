@@ -24,7 +24,7 @@ def create_yaml_manager(config):
         )
         return S3YamlManager(aws_info)
 
-def create_app(config) -> Flask:
+def create_app(config):
     app = Flask(__name__, instance_relative_config=False)
 
     app.config.from_object(config)

@@ -13,7 +13,7 @@ class S3YamlManager:
     def __init__(self, aws_details: AWSS3Information):
         self.aws_details = aws_details
 
-    def get_yamls(self) -> list[dict]:
+    def get_yamls(self):
         """Returns a list of dictionaries read from yaml files in s3"""
         bucket = self.get_s3_bucket()
         keys = self.get_files(bucket)
@@ -24,7 +24,7 @@ class S3YamlManager:
             yamls.extend(convert_to_yaml(contents))
         return yamls
 
-    def get_files(self, s3_bucket=None) -> list[str]:
+    def get_files(self, s3_bucket=None):
         """Returns a list of files in the given s3 bucket"""
         bucket = s3_bucket if s3_bucket else self.get_s3_bucket()
         return [
@@ -33,7 +33,7 @@ class S3YamlManager:
             if file.key[-1] != "/"
         ]
 
-    def get_file_from_s3(self, key, s3_bucket) -> str:
+    def get_file_from_s3(self, key, s3_bucket):
         """Downloads the contents of a file in s3 by its key"""
         bucket = s3_bucket if s3_bucket else self.get_s3_bucket()
         data = io.BytesIO()
