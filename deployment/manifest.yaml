@@ -10,7 +10,7 @@ spec:
   ports:
   - port: 80
     protocol: TCP
-    targetPort: 80
+    targetPort: 5000
   selector:
     run: checkrunner-api
   type: NodePort
@@ -25,11 +25,11 @@ metadata:
 spec:
   rules:
   - http:
-    paths:
-    - backend:
-        serviceName: checkrunner-api
-        servicePort: 80
-      path: "/checkrunner(/|$)(.*)"
+      paths:
+        - backend:
+            serviceName: checkrunner-api
+            servicePort: 80
+          path: "/checkrunner(/|$)(.*)"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -52,18 +52,18 @@ spec:
     spec:
       containers:
       - name: checkrunner-api-container
-        image: 
+        image: echogl-datateam-docker-dev-local.jfrog.io/checkrunner-api:70507-5e6e653d545a9ac612aa2f3b87bfc84cc738d524
         imagePullPolicy: Always
         envFrom:
         - configMapRef:
             name: checkrunner-api-config
-        - configMapRef:
+        - secretRef:
             name: checkrunner-api-secret
         env:
         - name: DB_ODS_ODSVAULT
           value: DRIVER={$(SQL_DRIVER)};SERVER=$(ODS_SERVER);DATABASE=$(ODS_VAULT);UID=$(SQL_USER);PWD=$(SQL_PASSWORD)
         ports:
-        - containerPort: 80
+        - containerPort: 5000
         resources:
           requests:
             memory: "1G"
@@ -74,7 +74,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /alive
-            port: 80
+            port: 5000
           initialDelaySeconds: 10
           periodSeconds: 10
           failureThreshold: 4
@@ -82,7 +82,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /ready
-            port: 80
+            port: 5000
           initialDelaySeconds: 10
           periodSeconds: 10
           failureThreshold: 4

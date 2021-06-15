@@ -13,11 +13,11 @@ data:
     S3_FOLDER: checkrunner
     AWS_ACCESS_KEY: AKIA5BPDHQI65MKEB746
     AWS_ROLE_ARN: arn:aws:iam::896514097725:role/echo-sec-dev-bi-datateam-checkrunner-role
-    AWS_EXTERNAL_ID: 896514097725
-    LOG_LEVEL: 30
+    AWS_EXTERNAL_ID: "896514097725"
+    LOG_LEVEL: "30"
     SQL_DRIVER: ODBC Driver 17 for SQL Server
     ODS_SERVER: cdcdevlodsdb01.dev.echogl.net
-    DB01_SERVER:
+    DB01_SERVER: cdcdevldb1db01.dev.echogl.net
     SQL_USER: checkrunner
     ODS_VAULT: ODSVault
     ODS_MART_TRACKING: ODSMartTracking
