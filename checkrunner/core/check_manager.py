@@ -25,6 +25,12 @@ class CheckManager:
             suites.add_checks(checks)
         return suites
 
+    def get_check_info(self, check_name):
+        checks = self.get_all_checks()
+        for c in checks:
+            if c.check_name == check_name:
+                return c
+
     def run_check_suite(self, suite_name):
         check_suite_collection = self.get_check_suites()
         checks = check_suite_collection.suites.get(suite_name)

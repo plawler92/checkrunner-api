@@ -63,6 +63,27 @@ def check_suites():
     else:
         return make_response(jsonify(check_suites=[]), 404)
 
+@api_blueprint.route("/check_suite", methods=["GET"])
+def get_check_suite():
+    name = request.args.get("name")
+    suites = current_app.check_manager.get_check_suites()
+
+    suite = suites.suites.get(name)
+
+    if suite:
+        return jsonify(check_suite=create_check_suite_response(suite))
+    else:
+        return make_response(jsonify(check_suite=None), 404)
+        
+def create_check_suite_response(suite):
+    checks = [
+        c.serialize() for c in suite
+    ]
+    return checks
+
+
+
+
 def convert_check_suite_collection(col):
     response = dict()
     for key, val in col.items():
