@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
       - name: checkrunner-api-container
-        image: echogl-datateam-docker-dev-local.jfrog.io/checkrunner-api:71118-980b90a08d8a11aec59b3171c74a68b6c68baae1
+        image: echogl-datateam-docker-dev-local.jfrog.io/checkrunner-api:71497-e531698c140c469c92946e9638991a682dcadc63
         imagePullPolicy: Always
         envFrom:
         - configMapRef:
