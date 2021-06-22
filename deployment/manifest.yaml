@@ -11,7 +11,6 @@ spec:
   - port: 5000
     protocol: TCP
     targetPort: 5000
-    #nodePort: 30700
     name: checkhttp
   selector:
     run: checkrunner-api
@@ -22,18 +21,16 @@ kind: Ingress
 metadata:
   name: checkrunner-api
   annotations:
-    # kubernetes.io/ingress.class: "nginx"
-    # nginx.ingress.kubernetes.io/rewrite-target: "/$2"
     kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: "/$2"
 spec:
   rules:
-  - host: localhost
-    http:
+  - http:
       paths:
-        - backend:
-            serviceName: checkrunner-api
-            servicePort: 5000
-          path: /checkrunner
+      - backend:
+          serviceName: checkrunner-api
+          servicePort: 5000
+        path: "/checkrunner(/|$)(.*)"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -56,7 +53,7 @@ spec:
     spec:
       containers:
       - name: checkrunner-api-container
-        image: echogl-datateam-docker-dev-local.jfrog.io/checkrunner-api:70507-5e6e653d545a9ac612aa2f3b87bfc84cc738d524
+        image: echogl-datateam-docker-dev-local.jfrog.io/checkrunner-api:71118-980b90a08d8a11aec59b3171c74a68b6c68baae1
         imagePullPolicy: Always
         envFrom:
         - configMapRef:
@@ -66,15 +63,27 @@ spec:
         env:
         - name: DB_ODS_ODSVAULT
           value: DRIVER={$(SQL_DRIVER)};SERVER=$(ODS_SERVER);DATABASE=$(ODS_VAULT);UID=$(SQL_USER);PWD=$(SQL_PASSWORD)
+        - name: DB_ODS_ODSMARTTRACKING
+          value: DRIVER={$(SQL_DRIVER)};SERVER=$(ODS_SERVER);DATABASE=$(ODS_MART_TRACKING);UID=$(SQL_USER);PWD=$(SQL_PASSWORD)
+        - name: DB_ODS_MARTSOURCING
+          value: DRIVER={$(SQL_DRIVER)};SERVER=$(ODS_SERVER);DATABASE=$(ODS_MART_SOURCING);UID=$(SQL_USER);PWD=$(SQL_PASSWORD)
+        - name: DB_ODS_ODSMARTTLQUOTING
+          value: DRIVER={$(SQL_DRIVER)};SERVER=$(ODS_SERVER);DATABASE=$(ODS_MART_TL_QUOTING);UID=$(SQL_USER);PWD=$(SQL_PASSWORD)
+        - name: DB_ODS_ODSLOG
+          value: DRIVER={$(SQL_DRIVER)};SERVER=$(ODS_SERVER);DATABASE=$(ODSLog);UID=$(SQL_USER);PWD=$(SQL_PASSWORD)
+        - name: DB_DB01_ECHOOPTIMIZER
+          value: DRIVER={$(SQL_DRIVER)};SERVER=$(DB01_SERVER);DATABASE=$(EchoOptimizer);UID=$(SQL_USER);PWD=$(SQL_PASSWORD)
+        - name: DB_DB01_ODSINTEGRATION
+          value: DRIVER={$(SQL_DRIVER)};SERVER=$(DB01_SERVER);DATABASE=$(ODSIntegration);UID=$(SQL_USER);PWD=$(SQL_PASSWORD)
         ports:
         - containerPort: 5000
         resources:
           requests:
-            memory: "1G"
-            cpu: "500m"
+            memory: "250Mi"
+            cpu: "100m"
           limits:
-            memory: "1.2G"
-            cpu: "800m"
+            memory: "750Mi"
+            cpu: "500m"
         livenessProbe:
           httpGet:
             path: /alive
