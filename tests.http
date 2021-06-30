@@ -14,11 +14,19 @@ GET http://localhost:5000/api/check_suites
 
 ###
 
-GET http://localhost:5000/api/check?name=three
+GET http://localhost:5000/api/check?suite=maintenance
 
 ###
 
-GET http://localhost:5000/api/check?suite=examples
+GET http://localhost:5000/api/check_suite?name=maintenance
+
+###
+
+GET http://localhost:5000/api/check?name=loadid-exists
+
+###
+
+GET http://localhost:5000/api/check?suite=mult
 
 ###
 

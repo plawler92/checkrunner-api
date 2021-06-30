@@ -1,9 +1,9 @@
-from checkrunner.core.check_suite import CheckSuite
+from checkrunner.core.check_results import CheckResults
 from checkrunner.core.check_result import CheckResult
 
 def test_check_suite():
     check_results = create_check_results(2)
-    cs = CheckSuite("test-suite", check_results)
+    cs = CheckResults("test-suite", check_results)
 
     assert cs.name == "test-suite"
     assert cs.successes == 1
@@ -12,7 +12,7 @@ def test_check_suite():
 
 def test_check_suite_serialization():
     check_results = create_check_results(2)
-    cs = CheckSuite("test-suite", check_results)
+    cs = CheckResults("test-suite", check_results)
     
     s = cs.serialize()
 

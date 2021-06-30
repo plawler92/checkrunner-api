@@ -1,42 +1,43 @@
-from checkrunner.infra.executors import SQLServerExecutor
-from checkrunner.core.factories import CheckFactory, SQLServerCheckFactory
-from tests.config import Config
+import pytest
 
-cfg = Config()
+from checkrunner.core.factories import CheckFactory
+from checkrunner.core.exceptions import FactoryClassTypeNotFoundError
+# from tests.config import Config
 
-def create_check_factory():
-    s = SQLServerCheckFactory(cfg.databases)
+# cfg = Config()
+
+# def create_check_factory():
+#     s = SQLServerCheckFactory(cfg.databases)
+#     cf = CheckFactory()
+#     cf.add_factory(s.factory_type, s)
+#     return cf
+
+def test_create_empty_check_factory():
     cf = CheckFactory()
-    cf.add_factory(s)
-    return cf
 
-def test_check_creation():
-    sample_check = {
-        "checkName": "three",
-        "checkType": "sqlserver",
-        "checkSuites": ["examples", "test"],
-        "database": "TestDB", 
-        "passValue": "Pass",
-        "sql": "SELECT 'Pass'"
-    }
-    cf = create_check_factory()
-    test = cf.create_check(sample_check) 
+    assert cf.factory_classes == dict()
 
-    assert test.suites == ["examples", "test"]
-    assert test.check_type == "sqlserver"
-    assert isinstance(test.executor, SQLServerExecutor) == True
+def test_create_check_factory_with_class(dummy_factory_class):
+    fc = {"dummy": dummy_factory_class}
+    cf = CheckFactory(fc)
 
-def test_check_creation_no_suite():
-    sample_check = {
-        "checkName": "three",
-        "checkType": "sqlserver",
-        "database": "TestDB", 
-        "passValue": "Pass",
-        "sql": "SELECT 'Pass'"
-    }
-    cf = create_check_factory()
-    test = cf.create_check(sample_check) 
+    assert cf.factory_classes == fc
+    
+def test_add_factory(dummy_factory_class):
+    cf = CheckFactory()
+    cf.add_factory("dummy", dummy_factory_class)
 
-    assert test.suites == []
-    assert test.check_type == "sqlserver"
-    assert isinstance(test.executor, SQLServerExecutor) == True
+    assert cf.factory_classes.get("dummy") == dummy_factory_class
+
+def test_create_check(dummy_factory_class, basic_sqlserver_yaml):
+    cf = CheckFactory()
+    cf.add_factory("sqlserver", dummy_factory_class)
+    c = cf.create_check(basic_sqlserver_yaml)
+
+    assert c == True
+
+def test_create_check_type_not_found(dummy_factory_class, basic_sqlserver_yaml):
+    cf = CheckFactory({"dummy": dummy_factory_class})
+    
+    with pytest.raises(FactoryClassTypeNotFoundError):
+        cf.create_check(basic_sqlserver_yaml)

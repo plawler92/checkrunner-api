@@ -7,10 +7,6 @@ class SQLServerExecutor:
         self.conn = conn
 
     def execute(self, test):
-        # with pyodbc.connect(self.conn) as conn:
-        #         cursor = conn.cursor()
-        #         cursor.execute(test)
-        #         return cursor.fetchone()[0]
         try:
             with pyodbc.connect(self.conn) as conn:
                 cursor = conn.cursor()

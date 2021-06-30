@@ -1,0 +1,21 @@
+{
+    "python.pythonPath": "env\\Scripts\\python.exe",
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "/checks/*"
+            ],
+            "url": "/jsonschema/check.schema.json"
+        }
+    ],
+    "yaml.schemas": {
+        "jsonschema/check.schema.json": ["/checks/*"]
+    },
+    "python.testing.pytestArgs": [
+        "tests",
+        "--ignore=tests/infra"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestEnabled": true
+}

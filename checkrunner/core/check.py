@@ -30,3 +30,13 @@ class Check:
                 datetime.now(), 
                 error_msg
             )
+
+    def serialize(self):
+        return {
+            "check_name": self.check_name,
+            "check_type": self.check_type,
+            "check": self.check,
+            "check_pass_value": self.check_pass_value,
+            "suites": self.suites,
+            "executor_class": str(type(self.executor))
+        }

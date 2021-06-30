@@ -1,154 +1,41 @@
-from checkrunner.core.check import Check
+import pytest
+
 from checkrunner.core.check_manager import CheckManager
-from checkrunner.core.factories import CheckFactory, SQLServerCheckFactory, check_factory
-from checkrunner.core.check_memory import CheckMemory
-from checkrunner.core.check import Check    
 from tests.config import Config
 
 cfg = Config()
 
-class ExampleExecutor:
-    def __init__(self, pass_value):
-        self.pass_value = pass_value
+def test_check_manager_creation(dummy_check_factory, dummy_yaml_manager):
+    cm = CheckManager(dummy_check_factory, dummy_yaml_manager)
 
-    def execute(self, check):
-        return self.pass_value
+    assert cm.check_factory == dummy_check_factory
+    assert cm.yaml_manager == dummy_yaml_manager
 
-class TestYamlManager:
-    def get_yamls(self):
-        return [
-            create_yaml("three", "sqlserver", None, "TestDB", "pass", "select 'pass'"),
-            create_yaml("four", "sqlserver", None, "TestDB", "pass", "select 'pass'")
-        ]
-    
-def create_yaml(check_name, check_type, check_suites, database, passValue, sql):
-    return {
-        "checkName": check_name,
-        "checkType": check_type,
-        "checkSuites": check_suites,
-        "database": database,
-        "passValue": passValue,
-        "sql": sql
-    }
+def test_create_checks(basic_sqlserver_yaml, dummy_check_factory):
+    cm = CheckManager(dummy_check_factory, None)
+    checks = cm.create_checks([basic_sqlserver_yaml])
 
-def create_check_manager(check_factory=None, check_memory=None, yaml_manager=None):
-    sf = SQLServerCheckFactory(cfg.databases)
-    cf = check_factory or CheckFactory([sf])
-    cmem = check_memory or CheckMemory()
-    fm = yaml_manager or TestYamlManager()
-    return CheckManager(cf, cmem, fm)
+    assert len(checks) == 1
+    assert checks[0] == True
 
-def test_refresh_checks():
-    cm = create_check_manager()
+def test_create_checks_factory_class_not_found_error(basic_sqlserver_yaml, factoryclassnotfound_check_factory):
+    cm = CheckManager(factoryclassnotfound_check_factory, None)
+    checks = cm.create_checks([basic_sqlserver_yaml])
 
-    cm.refresh_checks()
-    checks = cm.check_memory._checks
-    check_result = checks[0]
-
-    assert len(checks) == 2
-    assert check_result.check_name == "three"
-    assert check_result.check_type == "sqlserver"
-    assert check_result.check.strip().lower() == "select 'pass'"
-    assert check_result.check_pass_value.lower() == "pass"
-
-def test_refresh_checks_no_none():
-    sf = SQLServerCheckFactory({"No": "no"})
-    cf = CheckFactory([sf])
-    cm = create_check_manager(check_factory=cf)
-
-    cm.refresh_checks()
-    checks = cm.check_memory._checks
-    
     assert checks == []
 
-def test_run_check_by_name():
-    cmem = CheckMemory()
-    cmem._checks = create_checks(3)
+def test_get_check_suites(dummy_yaml_manager, basic_sqlserver_check_factory):
+    cm = CheckManager(basic_sqlserver_check_factory, dummy_yaml_manager)
+    suite = cm.get_check_suites()
 
-    cm = create_check_manager(check_memory=cmem)
-    result = cm.run_check_by_name("0")
+    assert len(suite.suites) == 2
+    assert len(suite.suites["demo"]) == 2
+    assert len(suite.suites["test"]) == 2
 
-    assert result.successes == 1
-    assert result.failures == 0
-    assert result.check_results[0].check_name == "0"
-    assert result.check_results[0].check_type == "sqlserver"
-    assert result.check_results[0].check_result == True
+    assert suite.suites["demo"][0].check_name == "1"
+    assert suite.suites["demo"][1].check_name == "2"
 
-def test_run_checks_by_type():
-    cmem = CheckMemory()
-    cmem._checks = create_checks(3)
+    assert suite.suites["test"][0].check_name == "1"
+    assert suite.suites["test"][1].check_name == "2"
 
-    cm = create_check_manager(check_memory=cmem)
-    result = cm.run_checks_by_type("sqlserver")
-
-    assert result.successes == 3
-    assert result.failures == 0
-    
-    for i, c in enumerate(result.check_results):
-        assert c.check_name == str(i)
-        assert c.check_type == "sqlserver"
-        assert c.check_result == True
-
-def test_run_checks_by_suite():
-    cmem = CheckMemory()
-    cmem._checks = create_checks(3)
-
-    cm = create_check_manager(check_memory=cmem)
-    results = cm.run_checks_by_suite("tests")
-
-    assert results.successes == 2
-    assert results.failures == 0
-    assert len(results.check_results) == 2
-    assert results.check_results[0].check_name == "0"
-    assert results.check_results[0].check_type == "sqlserver"
-    assert results.check_results[0].check_result == True
-    
-    assert results.check_results[1].check_name == "2"
-    assert results.check_results[1].check_type == "sqlserver"
-    assert results.check_results[1].check_result == True
-
-def test_get_check_names():
-    cmem = CheckMemory()
-    cmem._checks = create_checks(2)
-
-    cm = create_check_manager(check_memory=cmem)
-    results = cm.get_check_names()
-
-    assert len(results) == 2
-    for i in range(2):
-        assert results[i] == str(i)
-
-def test_get_check_suites():
-    cmem = CheckMemory()
-    cmem._checks = create_checks(3)
-    
-    cm = create_check_manager(check_memory=cmem)
-    results = cm.get_check_suites()
-
-    assert len(results) == 2
-    assert "tests" in results
-    assert "hello" in results
-
-def test_check_name_doesnt_exist():
-    cmem = CheckMemory()
-    cmem._checks = create_checks(3)
-
-    cm = create_check_manager(check_memory=cmem)
-    results = cm.run_check_by_name("asdlfkjasdlfkja")
-
-    assert results.successes == 0
-    assert results.failures == 0
-    assert results.check_results == []
-
-def create_checks(num_checks):
-    return [
-        Check(
-            str(i),
-            "sqlserver",
-            "SELECT 'Pass'",
-            "Pass",
-            ExampleExecutor("Pass"),
-            suites=["tests" if i % 2 == 0 else "hello"]
-        )
-        for i in range(num_checks)
-    ]
+# add tests for runchecksuites and run check by name

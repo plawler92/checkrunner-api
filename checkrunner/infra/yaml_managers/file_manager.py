@@ -1,10 +1,11 @@
 import os
-import yaml
 import logging
+
+from checkrunner.infra.yaml_managers.utils import convert_to_yaml
 
 class FileManager:
     def __init__(self, checks_path):
-        if os.path.exists(checks_path) == False or os.path.isdir(checks_path) == False:
+        if os.path.exists(checks_path) is False or os.path.isdir(checks_path) is False:
             logging.warning(f"checks_path: {checks_path} doesn't exist or isn't a directory")
         self.checks_path = checks_path
 
@@ -25,6 +26,7 @@ class FileManager:
         files = self.get_files()
         for file in files:
             with open(file) as f:
-                yamls.append(yaml.load(f, Loader=yaml.FullLoader))
+                # yamls.append(yaml.load(f, Loader=yaml.FullLoader))
+                yamls.extend(convert_to_yaml(f))
         return yamls
 

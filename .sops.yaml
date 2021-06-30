@@ -1,0 +1,3 @@
+creation_rules:
+  - path_regex: secret\.dev.?\.ya?ml$
+    pgp: '8ED5334517F886CC37EA1A7F7F6F8C17B3621F18'

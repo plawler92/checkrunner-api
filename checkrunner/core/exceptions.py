@@ -1,0 +1,2 @@
+class FactoryClassTypeNotFoundError(Exception):
+    pass

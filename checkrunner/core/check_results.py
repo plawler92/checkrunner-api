@@ -1,5 +1,5 @@
 
-class CheckSuite:
+class CheckResults:
     def __init__(self, name, check_results):
         self.name = name
         self.check_results = check_results
